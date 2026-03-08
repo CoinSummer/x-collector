@@ -1,0 +1,58 @@
+# X Collector Configuration Example
+# Copy this file to ~/.openclaw/x-collector.yaml and fill in your credentials
+#
+# Documentation: https://github.com/coinsummer/x-collector
+
+x:
+  # Required: Your X/Twitter API v2 Bearer Token
+  # Get one at: https://developer.twitter.com/en/portal/dashboard
+  #
+  # Steps to obtain:
+  # 1. Go to https://developer.twitter.com/en/portal/dashboard
+  # 2. Create a project and app (or use existing)
+  # 3. Generate Bearer Token in "Keys and tokens" section
+  # 4. Copy the token here (starts with "AAAA...")
+  bearer_token: "YOUR_BEARER_TOKEN_HERE"
+
+rate_limit:
+  # Adaptive rate limiting configuration
+  #
+  # X API v2 rate limits (Basic tier):
+  # - User tweets: ~15 requests per 15 minutes
+  # - Single tweet: ~15 requests per 15 minutes
+  # - Search: ~450 requests per 15 minutes
+  #
+  # The collector automatically adjusts delays based on remaining quota.
+
+  # Seconds between requests in normal mode (remaining > safe_threshold)
+  safe_delay: 0.7
+
+  # Seconds between requests when approaching limit (remaining < safe_threshold)
+  slow_delay: 2.0
+
+  # Switch to slow mode when remaining requests drops below this
+  safe_threshold: 10
+
+  # Wait for rate limit reset when remaining drops below this
+  critical_threshold: 2
+
+collection:
+  # Maximum tweets per API request (X API max is 100)
+  max_results_per_page: 100
+
+  # HTTP request timeout in seconds
+  timeout: 30
+
+  # User agent string for API requests
+  user_agent: "XCollector/0.1.0"
+
+output:
+  # Default output format: json, jsonl, or markdown
+  #
+  # json: Single JSON file with all tweets
+  # jsonl: JSON Lines format (one tweet per line, good for streaming)
+  # markdown: Human-readable markdown format
+  format: "markdown"
+
+  # Include referenced tweets (quotes, reply-to tweets)
+  include_referenced: true
